@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   Fantasia Group — Design 1 "Paper & Thread"
+   Warm paper, ink, and the logo magenta (#9F388A sampled from the mark).
+
+   Contrast (WCAG AA, checked against --color-paper #FAF7F2):
+     ink 17.2:1 · ink-muted 7.3:1 · ink-dim 5.5:1
+     brand 5.8:1 · brand-deep 7.3:1 · white on brand 6.2:1
+   Text never sits on the tints below 4.5:1 — tints are for surfaces only.
+   ───────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-paper: #faf7f2;
+  --color-paper-2: #f3ede6;
+  --color-paper-3: #ebe3da;
+  --color-line: #e2d9cf;
+  --color-ink: #1a1216;
+  --color-ink-muted: #5c4f57;
+  --color-ink-dim: #6f6168;
+  --color-brand: #9f388a;
+  --color-brand-deep: #8a2c78;
+  --color-brand-ink: #4a1a41;
+  --color-brand-tint: #f3e6ef;
+  --color-brand-tint-2: #e9d3e2;
+  --color-solar: #b4581f;
+  --color-solar-tint: #fbead9;
+
+  --font-display: var(--font-fraunces), "Georgia", serif;
+  --font-body: var(--font-hanken), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-feature-settings: "ss01", "cv11";
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-brand);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility container-x {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  max-width: 88rem;
+  @media (width >= 640px) { padding-inline: 2rem; }
+  @media (width >= 1024px) { padding-inline: 3.5rem; }
+}
+
+/* Eyebrow label */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-brand-deep);
+}
+
+/* Display headline with Fraunces optical size tuned for large text */
+@utility display {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+@layer components {
+/* Paper grain — a subtle SVG noise overlay that keeps the page from feeling flat */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: 0.055;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 3.25rem;
+  padding-inline: 1.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.005em;
+  transition: transform 0.5s var(--ease-out-expo), background-color 0.3s, color 0.3s, box-shadow 0.4s;
+  will-change: transform;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: var(--color-brand);
+  color: #fff;
+  box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--color-brand) 60%, transparent);
+}
+.btn-primary:hover {
+  background: var(--color-brand-deep);
+  box-shadow: 0 16px 36px -12px color-mix(in srgb, var(--color-brand) 75%, transparent);
+  transform: translateY(-2px);
+}
+.btn-ghost {
+  color: var(--color-ink);
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--color-line);
+}
+.btn-ghost:hover {
+  box-shadow: inset 0 0 0 1.5px var(--color-ink);
+  transform: translateY(-2px);
+}
+.btn .arrow {
+  transition: transform 0.5s var(--ease-out-expo);
+}
+.btn:hover .arrow { transform: translateX(4px); }
+
+/* Underline link that draws from the left */
+.link-draw {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--color-brand-deep);
+}
+.link-draw::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1.5px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s var(--ease-out-expo);
+}
+.link-draw:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 48s linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* Elastic thread pattern used behind the CTA */
+.thread-bg {
+  background-image:
+    repeating-linear-gradient(
+      -12deg,
+      transparent 0 26px,
+      color-mix(in srgb, var(--color-brand) 10%, transparent) 26px 27px
+    );
+}
+
+/* Card lift */
+.lift {
+  transition: transform 0.6s var(--ease-out-expo), box-shadow 0.6s var(--ease-out-expo);
+}
+.lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 60px -30px rgba(26, 18, 22, 0.35);
+}
+}
