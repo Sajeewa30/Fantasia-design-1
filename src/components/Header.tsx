@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { nav, businesses } from "@/data/site";
@@ -9,6 +10,8 @@ import { nav, businesses } from "@/data/site";
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -46,16 +49,26 @@ export default function Header() {
           </Link>
 
           <nav aria-label="Primary" className="hidden items-center gap-9 lg:flex">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="group relative text-[0.95rem] font-medium text-ink-muted transition-colors hover:text-ink"
-              >
-                {item.label}
-                <span className="absolute -bottom-1.5 left-0 h-[1.5px] w-full origin-right scale-x-0 bg-brand transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100" />
-              </Link>
-            ))}
+            {nav.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`group relative text-[0.95rem] font-medium transition-colors hover:text-ink ${
+                    active ? "text-ink" : "text-ink-muted"
+                  }`}
+                >
+                  {item.label}
+                  <span
+                    className={`absolute -bottom-1.5 left-0 h-[1.5px] w-full bg-brand transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100 ${
+                      active ? "origin-left scale-x-100" : "origin-right scale-x-0"
+                    }`}
+                  />
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-3">

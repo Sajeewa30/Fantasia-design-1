@@ -209,3 +209,86 @@
   box-shadow: 0 30px 60px -30px rgba(26, 18, 22, 0.35);
 }
 }
+
+/* ── Inner pages: forms and "awaiting information" blocks ─────────────── */
+@layer components {
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.field > label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.field > label .req {
+  color: var(--color-brand);
+  margin-left: 0.15rem;
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border-radius: 0.9rem;
+  border: 1.5px solid var(--color-line);
+  background: #fff;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--color-ink);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--color-ink-dim);
+  opacity: 0.7;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-brand) 14%, transparent);
+}
+.field textarea {
+  min-height: 8.5rem;
+  resize: vertical;
+}
+.field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%235c4f57' stroke-width='1.6'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.6rem;
+}
+.field input[type="file"] {
+  padding: 0.6rem 0.75rem;
+  background: var(--color-paper-2);
+  border-style: dashed;
+  cursor: pointer;
+}
+.field input[type="file"]::file-selector-button {
+  margin-right: 0.9rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: #fff;
+  padding: 0.5rem 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.field .hint {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--color-ink-dim);
+}
+
+/* Content the client still has to supply — visible on purpose during review. */
+.pending {
+  border: 1.5px dashed color-mix(in srgb, var(--color-brand) 45%, transparent);
+  background: color-mix(in srgb, var(--color-brand-tint) 55%, transparent);
+  border-radius: 1.25rem;
+}
+}
