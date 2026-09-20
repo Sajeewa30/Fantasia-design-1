@@ -16,10 +16,11 @@ export function WordReveal({ text, className = "" }: { text: string; className?:
         const last = i === words.length - 1;
         return (
           <Fragment key={i}>
-            <span className="inline-block overflow-hidden pb-[0.08em] align-top">
+            {/* The mask is padded so descenders (g, y, p) are not clipped; the negative margins keep line spacing unchanged. */}
+            <span className="-mb-[0.24em] -mt-[0.06em] inline-block overflow-hidden pb-[0.24em] pt-[0.06em] align-top">
               <motion.span
                 className={`inline-block ${last ? "text-brand italic" : ""}`}
-                initial={{ y: "110%", rotate: 3 }}
+                initial={{ y: "135%", rotate: 3 }}
                 animate={{ y: 0, rotate: 0 }}
                 transition={{ duration: 1.1, delay: 0.15 + i * 0.05, ease }}
               >
